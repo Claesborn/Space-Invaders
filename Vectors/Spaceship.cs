@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 class Spaceship
 {
-    protected Point pos = new();
+    public Point pos = new();
     int shipHP = 2;
     public bool isAlive = true;
     
@@ -33,6 +33,11 @@ class Spaceship
         {
             isAlive = false;
         }
+    }
+
+    public void TakeDamage()
+    {
+        shipHP -= 1;
     }
 }
 

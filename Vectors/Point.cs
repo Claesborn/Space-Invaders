@@ -19,6 +19,11 @@ internal class Point
         X = 0;
         Y = 0;
     }
+    public Point(Point pos)
+    {
+        X = pos.X;
+        Y = pos.Y;
+    }
     public void Move(double x, double y)
     {
         X += x;

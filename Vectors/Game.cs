@@ -10,13 +10,14 @@ class Game
     Player player;
     Stopwatch stopwatch = new();
     double deltaTime = 0;
-    Enemy[] enemies = new Enemy[20];
+    Enemy[] enemies = new Enemy[5];
     int maxEnemies = 20;
     int enemyCount = 0;
     double tick = 3;
     double spawnTimer = 3;
     static Random random = new();
-
+    //Deathanimation[] deathanimations = new Deathanimation[20];
+    //int animationCounter = 0;
     double frameTime = 1.0 / 25;
     public Game()
     {
@@ -53,17 +54,37 @@ class Game
         foreach (Bullet bullet in player.bullets)
         {
             if (bullet != null)
+            {
                 bullet.UpdateBullet(deltaTime);
+                
+                foreach (Enemy enemy in enemies)
+                {
+                    if (enemy != null)
+                    {
+                        if (enemy.pos.X == bullet.X && enemy.pos.Y == bullet.Y)
+                        {
+                            enemy.TakeDamage();
+                            bullet.isAlive = false;
+                        }
+                    }
+                }
+            }
         }
-        CheckDestruction();
         SpawnEnemies();
         foreach (Enemy enemy in enemies)
         {
             if(enemy != null)
             {
                 enemy.Move(deltaTime);
+                if (enemy.pos == player.pos)
+                {
+                    player.TakeDamage();
+                    enemy.isAlive = false;
+
+                }
             }
         }
+        CheckDestruction();
 
     }
 
@@ -95,17 +116,28 @@ class Game
                 enemy.Draw();
             }
         }
+        //foreach (Deathanimation deathanimation in deathanimations)
+        //    if(deathanimation != null)
+        //        deathanimation.DrawAnimation(deltaTime);
     }
     void CheckDestruction()
     {
         player.HandleBulletDestruction();
+        HandleEnemyDestruction();
         player.Destroy();
+        //HandleAnimDestruction();
         foreach (Enemy enemy in enemies)
         {
             if (enemy != null)
             {
                 enemy.HandleBulletDestruction();
                 enemy.Destroy();
+                //if (enemy.isAlive == false && animationCounter < 5)
+                //{
+                //    deathanimations[animationCounter] = new(enemy.pos);
+                //    animationCounter++;
+                //    
+                //}
             }
         }
     }
@@ -121,6 +153,48 @@ class Game
                 tick += spawnTimer;
                 enemies[enemyCount] = new Enemy(1, random.Next(1, Console.WindowWidth), 1);
                 enemyCount++;
+            }
+        }
+    }
+
+    //public void HandleAnimDestruction()
+    //{
+    //    for (int i = 0; i < animationCounter; i++)
+    //    {
+    //        if (!deathanimations[i].isAlive)  // Check if the bullet is no longer alive
+    //        {
+    //            // Shift the remaining animations in the array to fill the gap
+    //            for (int j = i; j < animationCounter - 1; j++)
+    //            {
+    //                deathanimations[j] = deathanimations[j + 1];
+    //            }
+    //
+    //            // Decrement the animation count
+    //            animationCounter--;
+    //
+    //            // Set the last slot in the array to null (optional)
+    //            deathanimations[animationCounter] = null;
+    //        }
+    //    }
+    //}
+
+    public void HandleEnemyDestruction()
+    {
+        for (int i = 0; i < enemyCount; i++)
+        {
+            if (!enemies[i].isAlive)  // Check if the bullet is no longer alive
+            {
+                // Shift the remaining bullets in the array to fill the gap
+                for (int j = i; j < enemyCount - 1; j++)
+                {
+                    enemies[j] = enemies[j + 1];
+                }
+
+                // Decrement the bullet count
+                enemyCount--;
+
+                // Set the last slot in the array to null (optional)
+                enemies[enemyCount] = null;
             }
         }
     }

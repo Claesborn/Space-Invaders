@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 class Bullet
 {
-    int X = 0;
-    int Y = 0;
+    public int X = 0;
+    public int Y = 0;
     //Point pos;
     double speed = 0.2;
     double tick = 0;
