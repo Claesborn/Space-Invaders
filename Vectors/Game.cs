@@ -10,7 +10,7 @@ class Game
     Player player;
     Stopwatch stopwatch = new();
     double deltaTime = 0;
-    Enemy[] enemies = new Enemy[5];
+    Enemy[] enemies = new Enemy[20];
     int maxEnemies = 20;
     int enemyCount = 0;
     double tick = 3;
