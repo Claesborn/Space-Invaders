@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 class Player : Spaceship
 {
     //Point pos = new(60, 28);
-    public Bullet[] bullets = new Bullet[5];
+    public Bullet[] bullets = new Bullet[15];
     int bulletCount = 0;
+    int maxBullets = 5;
     public Player(int shipHP, int X, int Y) : base(shipHP, X, Y)
     {
 
@@ -64,7 +65,7 @@ class Player : Spaceship
             }
             if (keyInfo.Key == ConsoleKey.Spacebar)
             {
-                if(bulletCount < 5)
+                if(bulletCount < maxBullets)
                 {
                     bullets[bulletCount] = new Bullet((int)pos.X, (int)pos.Y-1);
                     bulletCount++;
