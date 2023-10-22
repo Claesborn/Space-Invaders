@@ -11,7 +11,7 @@ class Bullet
     public int X = 0;
     public int Y = 0;
     //Point pos;
-    double speed = 0.2;
+    double speed = 0.1;
     double tick = 0;
     double lifeTime = 8;
     public bool isAlive = true;
