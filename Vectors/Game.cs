@@ -116,6 +116,7 @@ class Game
         //foreach (Deathanimation deathanimation in deathanimations)
         //    if(deathanimation != null)
         //        deathanimation.DrawAnimation(deltaTime);
+        Score.DisplayScore();
     }
     void CheckDestruction()
     {
@@ -148,7 +149,7 @@ class Game
             if (enemyCount < maxEnemies)
             {
                 tick += spawnTimer;
-                enemies[enemyCount] = new Enemy(1, random.Next(1, Console.WindowWidth), 1);
+                enemies[enemyCount] = new Enemy(2, random.Next(1, Console.WindowWidth), 1);
                 enemyCount++;
             }
         }
@@ -179,17 +180,17 @@ class Game
     {
         for (int i = 0; i < enemyCount; i++)
         {
-            if (!enemies[i].isAlive)  // Check if the bullet is no longer alive
+            if (!enemies[i].isAlive)  // Check if the enemy is no longer alive
             {
-                // Shift the remaining bullets in the array to fill the gap
+                // Shift the remaining enemies in the array to fill the gap
                 for (int j = i; j < enemyCount - 1; j++)
                 {
                     enemies[j] = enemies[j + 1];
                 }
 
-                // Decrement the bullet count
+                // Decrement the enemy count
                 enemyCount--;
-
+                Score.AddScore(100);
                 // Set the last slot in the array to null (optional)
                 enemies[enemyCount] = null;
             }

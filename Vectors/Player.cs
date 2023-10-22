@@ -66,6 +66,10 @@ class Player : Spaceship
                     bulletCount++;
                 }
             }
+            if (keyInfo.Key == ConsoleKey.Escape)
+            {
+                Environment.Exit(1);
+            }
 
         }
     }
