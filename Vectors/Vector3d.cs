@@ -98,8 +98,8 @@ public class Vector3d
 
     public static Vector3d Cross(Vector3d a, Vector3d b)
     {
-        return new Vector3d(a.Y * b.Z - b.Y * a.Z, 
-                            a.Z * b.X - a.X * b.Z, 
+        return new Vector3d(a.Y * b.Z - b.Y * a.Z,
+                            a.Z * b.X - a.X * b.Z,
                             a.X * b.Y - a.Y * b.X);
     }
 
@@ -136,7 +136,7 @@ public class Vector3d
             return true;
         }
     }
-    
+
 
     double GetLength()
     {

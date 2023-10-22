@@ -15,6 +15,7 @@ static class Score
     static Score()
     {
         LoadHighScore();
+        score = 1000;
     }
 
     public static void AddScore(int points)

@@ -4,18 +4,18 @@ using System.Diagnostics;
 
 class Game
 {
+    static Random random = new();
     Player player;
     Stopwatch stopwatch = new();
+    Spaceship[] enemies = new Spaceship[50];
     double deltaTime = 0;
-    Enemy[] enemies = new Enemy[50];
     int maxEnemies = 20;
     int enemyCount = 0;
     double tick = 3;
     double spawnTimer = 3;
-    static Random random = new();
+    double frameTime = 1.0 / 25;
     //Deathanimation[] deathanimations = new Deathanimation[20];
     //int animationCounter = 0;
-    double frameTime = 1.0 / 25;
     public Game()
     {
         
@@ -58,7 +58,7 @@ class Game
             {
                 bullet.UpdateBullet(deltaTime);
                 
-                foreach (Enemy enemy in enemies)
+                foreach (Spaceship enemy in enemies)
                 {
                     if (enemy != null)
                     {
@@ -72,7 +72,7 @@ class Game
             }
         }
         
-        foreach (Enemy enemy in enemies)
+        foreach (Spaceship enemy in enemies)
         {
             if(enemy != null)
             {
@@ -102,15 +102,15 @@ class Game
             if(bullet != null)
                 bullet.Draw();
         }
-        foreach (Enemy enemy in enemies)
+        foreach (Spaceship enemy in enemies)
         {
             if (enemy != null)
             {
-                foreach (Bullet bullet in enemy.bullets)
-                {
-                    if (bullet != null)
-                        bullet.Draw();
-                }
+                //foreach (Bullet bullet in enemy.bullets)
+                //{
+                //    if (bullet != null)
+                //        bullet.Draw();
+                //}
             }
             if(enemy != null && enemy.isAlive)
             {
@@ -129,11 +129,11 @@ class Game
         HandleEnemyDestruction();
         player.Destroy();
         //HandleAnimDestruction();
-        foreach (Enemy enemy in enemies)
+        foreach (Spaceship enemy in enemies)
         {
             if (enemy != null)
             {
-                enemy.HandleBulletDestruction();
+                //enemy.HandleBulletDestruction();
                 enemy.Destroy();
                 //if (enemy.isAlive == false && animationCounter < 5)
                 //{
@@ -149,9 +149,14 @@ class Game
     {
         tick -= deltaTime;
 
-        if(tick <= 0)
+        if (Score.score > 1000 && random.Next(0, 11) > 8 && tick <= 0 && enemyCount < maxEnemies)
         {
-            if (enemyCount < maxEnemies)
+            tick += spawnTimer;
+            enemies[enemyCount] = new Boss(5, random.Next(1, Console.WindowWidth), 1);
+            enemyCount++;
+        }
+        else if (enemyCount < maxEnemies && tick <= 0)
+        {
             {
                 tick += spawnTimer;
                 enemies[enemyCount] = new Enemy(2, random.Next(1, Console.WindowWidth), 1);
@@ -195,7 +200,11 @@ class Game
 
                 // Decrement the enemy count
                 enemyCount--;
-                Score.AddScore(100);
+
+                if (enemies[enemyCount].GetType() == typeof(Enemy))
+                    Score.AddScore(100);
+                else if (enemies[enemyCount].GetType() == typeof(Boss))
+                    Score.AddScore(300);
                 // Set the last slot in the array to null (optional)
                 enemies[enemyCount] = null;
             }

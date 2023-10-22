@@ -11,7 +11,8 @@ class Spaceship
     public Point pos = new();
     protected int shipHP = 2;
     public bool isAlive = true;
-    
+    double moveTimer = 1;
+    double moveInterval = 1;
 
     public Spaceship(int shipHP, int x, int y)
     {
@@ -38,6 +39,19 @@ class Spaceship
     public void TakeDamage()
     {
         shipHP -= 1;
+    }
+    public virtual void Move(double deltaTime)
+    {
+        moveTimer -= deltaTime;
+        if (moveTimer <= 0)
+        {
+            pos.Y++;
+            if (pos.Y > Console.WindowHeight - 1)
+                pos.Y = 1;
+            moveTimer += moveInterval;
+
+        }
+
     }
 }
 
