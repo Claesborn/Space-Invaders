@@ -23,6 +23,7 @@ static class Score
         if(score > highscore)
         {
             highscore = score;
+            SaveHighScore();
         }
     }
 
