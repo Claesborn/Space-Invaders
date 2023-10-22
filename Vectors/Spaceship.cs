@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 class Spaceship
 {
     public Point pos = new();
-    int shipHP = 2;
+    protected int shipHP = 2;
     public bool isAlive = true;
     
 

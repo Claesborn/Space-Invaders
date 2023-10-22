@@ -93,5 +93,10 @@ class Player : Spaceship
             }
         }
     }
+    public void DisplayPlayerHP()
+    {
+        Console.SetCursorPosition(2, 0);
+        Console.Write($"Hitpoints: {base.shipHP}");
+    }
 }
 

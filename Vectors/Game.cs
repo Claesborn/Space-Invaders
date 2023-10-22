@@ -23,13 +23,14 @@ class Game
     public void Run()
     {
         Init();
-        while (true)
+        while (player.isAlive)
         {
             stopwatch.Restart();
             Update(deltaTime);
             Render();
             
             deltaTime = stopwatch.Elapsed.TotalSeconds;
+            //Sets framerate
             if (deltaTime < frameTime)
             {
                 int sleepTime = (int)(frameTime - deltaTime) * 1000;
@@ -37,6 +38,7 @@ class Game
                     Thread.Sleep(sleepTime);
             }
         }
+        Score.SaveHighScore();
     }
     void Init()
     {
@@ -44,10 +46,12 @@ class Game
         player = new(3, Console.WindowWidth / 2, Console.WindowHeight - 2);
         Console.CursorVisible = false;
         stopwatch.Start();
+        
     }
     void Update(double deltaTime)
     {
         player.HandlePlayerInput();
+        SpawnEnemies();
         foreach (Bullet bullet in player.bullets)
         {
             if (bullet != null)
@@ -67,13 +71,13 @@ class Game
                 }
             }
         }
-        SpawnEnemies();
+        
         foreach (Enemy enemy in enemies)
         {
             if(enemy != null)
             {
                 enemy.Move(deltaTime);
-                if (enemy.pos == player.pos)
+                if ((int)enemy.pos.X == (int)player.pos.X && (int)enemy.pos.Y == (int)player.pos.Y)
                 {
                     player.TakeDamage();
                     enemy.isAlive = false;
@@ -117,6 +121,7 @@ class Game
         //    if(deathanimation != null)
         //        deathanimation.DrawAnimation(deltaTime);
         Score.DisplayScore();
+        player.DisplayPlayerHP();
     }
     void CheckDestruction()
     {
